@@ -16,8 +16,10 @@ use Dplus\Reports\Json\Spreadsheets\Writer;
  * Report Controller
  * 
  * Base Class for Reports Manipulation
+ * @property Report $report Report
  */
 abstract class ReportController extends Controller {
+	protected $report;
 
 	public function handle() {
 		if ($this->initConfig() === false) {
@@ -26,9 +28,8 @@ abstract class ReportController extends Controller {
 		if ($this->initEnv() === false) {
 			return false;
 		}
-		$report = $this->getReport();
 
-		if ($report === false) {
+		if ($this->initReport() === false) {
 			return false;
 		}
 		return true;
@@ -72,6 +73,15 @@ abstract class ReportController extends Controller {
 			return false;
 		}
 		return $report;
+	}
+
+	/**
+	 * Initialize Report
+	 * @return bool
+	 */
+	protected function initReport() {
+		$this->report = $this->getReport();
+		return empty($this->report) === false;
 	}
 
 	/**
