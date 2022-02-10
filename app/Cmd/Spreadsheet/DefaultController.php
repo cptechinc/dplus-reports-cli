@@ -13,10 +13,15 @@ use Dplus\Reports\Json\Spreadsheets\Writer;
 
 /**
  * Spreadsheet
- * 
  * Writes Spreadsheet from JSON report
  * 
  * @property string $lastWrittenFile  Full Filepath of the last written file
+ * 
+ * Usage:
+ *   [shell] spreadsheet [options]
+ * Options:
+ *   report  Report Code
+ *   id      Report ID
  */
 class DefaultController extends Controller {
 	protected $lastWrittenFile = '';
