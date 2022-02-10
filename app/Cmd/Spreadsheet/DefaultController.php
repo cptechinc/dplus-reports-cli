@@ -15,8 +15,12 @@ use Dplus\Reports\Json\Spreadsheets\Writer;
  * Spreadsheet
  * 
  * Writes Spreadsheet from JSON report
+ * 
+ * @property string $lastWrittenFile  Full Filepath of the last written file
  */
 class DefaultController extends Controller {
+	protected $lastWrittenFile = '';
+
 	public function handle() {
 		if ($this->initConfig() === false) {
 			return false;
@@ -27,9 +31,7 @@ class DefaultController extends Controller {
 		if ($this->initReport() === false) {
 			return false;
 		}
-
-		$spreadsheet = $this->createSpreadsheet();
-		return $this->writeSpreadsheetToFile($spreadsheet);
+		return $this->writeSpreadsheetToFile($this->createSpreadsheet());
 	}
 
 	/**
@@ -58,6 +60,7 @@ class DefaultController extends Controller {
 			return false;
 		}
 		$this->getPrinter()->success('Succeeded to write file: '. $writer->lastWrittenFile);
+		$this->lastWrittenFile = $writer->lastWrittenFile;
 		return true;
 	}
 }
