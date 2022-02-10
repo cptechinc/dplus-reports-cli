@@ -16,6 +16,11 @@ use Dplus\Reports\Json\Spreadsheets\Writer;
  * Report Controller
  * 
  * Base Class for Reports Manipulation
+ * 
+ * Usage:
+ *   [shell] [argument] [options]
+ * Options:
+ * 
  * @property Report $report Report
  */
 abstract class ReportController extends Controller {
