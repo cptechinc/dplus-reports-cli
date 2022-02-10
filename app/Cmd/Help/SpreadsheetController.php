@@ -7,6 +7,7 @@ use Pauldro\Minicli\Cmd\Help\Controller;
 /**
  * Help\SpreadsheetController
  * Displays Help Screen for Spreadsheet
+ * 
  */
 class SpreadsheetController extends Controller {
 	const COMMAND = 'spreadsheet';
