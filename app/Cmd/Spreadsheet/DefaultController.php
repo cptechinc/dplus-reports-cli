@@ -7,7 +7,6 @@ use Minicli\App;
 // Command Library
 use Lib\Cmd\ReportController as Controller;
 // Dplus Reports
-use Dplus\Reports\Json\Report;
 use Dplus\Reports\Json\Spreadsheets\Report as Spreadsheet;
 use Dplus\Reports\Json\Spreadsheets\Writer;
 
@@ -25,37 +24,34 @@ class DefaultController extends Controller {
 		if ($this->initEnv() === false) {
 			return false;
 		}
-		$report = $this->getReport();
-
-		if ($report === false) {
+		if ($this->initReport() === false) {
 			return false;
 		}
-		$spreadsheet = $this->createSpreadsheet($report);
-		return $this->writeSpreadsheetToFile($report, $spreadsheet);
+
+		$spreadsheet = $this->createSpreadsheet();
+		return $this->writeSpreadsheetToFile($spreadsheet);
 	}
 
 	/**
 	 * Return Spreadsheet generated from Report
-	 * @param  Report       $report
 	 * @return Spreadsheet
 	 */
-	protected function createSpreadsheet(Report $report) {
+	protected function createSpreadsheet() {
 		$spreadsheet = new Spreadsheet();
-		$spreadsheet->setJson($report->getJson());
+		$spreadsheet->setJson($this->report->getJson());
 		$spreadsheet->generate();
 		return $spreadsheet;
 	}
 
 	/**
 	 * Save Spreadsheet file
-	 * @param  Report      $report
 	 * @param  Spreadsheet $spreadsheet
 	 * @return bool
 	 */
-	protected function writeSpreadsheetToFile(Report $report, Spreadsheet $spreadsheet) {
+	protected function writeSpreadsheetToFile(Spreadsheet $spreadsheet) {
 		$writer = new Writer\Xlsx();
-		$writer->filename   = $report->getId();
-		$writer->fileprefix = $report::CODE;
+		$writer->filename   = $this->report->getId();
+		$writer->fileprefix = $this->report::CODE;
 		$success = $writer->write($spreadsheet->getSpreadsheet());
 		if ($success === false) {
 			$this->getPrinter()->error('Failed to write file: '. $writer->lastWrittenFile);
@@ -64,6 +60,4 @@ class DefaultController extends Controller {
 		$this->getPrinter()->success('Succeeded to write file: '. $writer->lastWrittenFile);
 		return true;
 	}
-
-	
 }
