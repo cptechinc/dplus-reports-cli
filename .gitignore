@@ -1,0 +1,10 @@
+# Atom files
+.ftpconfig
+.ftpignore
+project.cson
+
+# Vendor
+vendor/
+
+# Config Files
+/.env

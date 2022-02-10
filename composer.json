@@ -1,0 +1,27 @@
+{
+	"name": "dplus/controllers",
+	"description": "Controllers",
+	"type": "library",
+	"keywords": [ "processwire", "module" ],
+	"homepage": "http://modules.processwire.com",
+	"license": "MIT",
+	"minimum-stability": "dev",
+	"authors": [
+		{
+			"name": "Paul Gomez",
+			"email": "pauldro952@hotmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"App\\": "app/",
+			"Lib\\": "lib/"
+		}
+	},
+	"require": {
+		"vlucas/phpdotenv": "5.4.x-dev",
+		"pauldro/minicli": "dev-main",
+		"cptechinc/dplus-json-reports": "dev-main",
+		"phpoffice/phpspreadsheet": "dev-master#11575ef3c416aa9c0be1ae3dfd3cad8d385a418c"
+	}
+}
