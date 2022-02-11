@@ -9,6 +9,7 @@ use Lib\Cmd\ReportController as Controller;
 // Dplus Reports
 use Dplus\Reports\Json\Spreadsheets\Report as Spreadsheet;
 use Dplus\Reports\Json\Spreadsheets\Writer;
+use Dplus\Reports\Files;
 
 
 /**
@@ -20,8 +21,11 @@ use Dplus\Reports\Json\Spreadsheets\Writer;
  * Usage:
  *   [shell] spreadsheet [options]
  * Options:
- *   report  Report Code
- *   id      Report ID
+ *   report   Report Code
+ *   id       Report ID
+ *  --copy    Make Copy
+ *  filename  Copy Filename
+ *  dir       Copy File Directory
  */
 class DefaultController extends Controller {
 	protected $lastWrittenFile = '';
@@ -36,7 +40,41 @@ class DefaultController extends Controller {
 		if ($this->initReport() === false) {
 			return false;
 		}
-		return $this->writeSpreadsheetToFile($this->createSpreadsheet());
+		$saved = $this->writeSpreadsheetToFile($this->createSpreadsheet());
+
+		if ($this->hasFlag('--copy')) {
+			$this->copySpreadsheet();
+		}
+		return $saved;
+	}
+
+	protected function copySpreadsheet() {
+		if (empty($this->lastWrittenFile)) {
+			$this->getPrinter()->error('Written File not found');
+			return false;
+		}
+		if (file_exists($this->lastWrittenFile) === false) {
+			$this->getPrinter()->error("File '$this->lastWrittenFile' not found");
+			return false;
+		}
+		if ($this->hasParam('dir') === false || is_dir($this->getParam('dir')) === false) {
+			$this->getPrinter()->error("Invalid directory provided (dir=DIR)");
+			return false;
+		}
+		$copier = new Files\Copier();
+		$copier->setOriginalFilepath($this->lastWrittenFile);
+		$copier->setDestinationDirectory($this->getParam('dir'));
+
+		if ($this->hasParam('filename')) {
+			$copier->setDestinationFilename($this->getParam('filename'));
+		}
+
+		if ($copier->copy() === false) {
+			$this->getPrinter()->error($copier->error);
+			return false;
+		}
+		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
+		return true;
 	}
 
 	/**

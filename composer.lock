@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-json-reports.git",
-                "reference": "c69b6687bb63eef3478a987378ec0e19ba08fcd3"
+                "reference": "b0a62bbb0a60c38344699add9b3c9ec3fa32ddb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-json-reports/zipball/c69b6687bb63eef3478a987378ec0e19ba08fcd3",
-                "reference": "c69b6687bb63eef3478a987378ec0e19ba08fcd3",
+                "url": "https://api.github.com/repos/cptechinc/dplus-json-reports/zipball/b0a62bbb0a60c38344699add9b3c9ec3fa32ddb9",
+                "reference": "b0a62bbb0a60c38344699add9b3c9ec3fa32ddb9",
                 "shasum": ""
             },
             "require-dev": {
@@ -27,7 +27,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Dplus\\Reports\\Json\\": "src/"
+                    "Dplus\\Reports\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -35,7 +35,7 @@
                 "issues": "https://github.com/cptechinc/dplus-json-reports/issues",
                 "source": "https://github.com/cptechinc/dplus-json-reports/tree/main"
             },
-            "time": "2022-02-10T14:49:34+00:00"
+            "time": "2022-02-10T17:07:38+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
