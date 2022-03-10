@@ -10,7 +10,8 @@ use Lib\Cmd\ReportController as Controller;
 use Dplus\Reports\Json\Spreadsheets\Report as Spreadsheet;
 use Dplus\Reports\Json\Spreadsheets\Writer;
 use Dplus\Reports\Files;
-
+// Emails
+use Lib\Email;
 
 /**
  * Spreadsheet
@@ -42,13 +43,19 @@ class DefaultController extends Controller {
 		}
 		$saved = $this->writeSpreadsheetToFile($this->createSpreadsheet());
 
+
 		if ($this->hasFlag('--copy')) {
-			$this->copySpreadsheet();
+			$this->copySpreadsheetFromCmd();
 		}
+
+		if ($this->report->getJson()->getEmails()->hasTo()) {
+			$this->emailFromJson();
+		}
+
 		return $saved;
 	}
 
-	protected function copySpreadsheet() {
+	protected function copySpreadsheetFromCmd() {
 		if (empty($this->lastWrittenFile)) {
 			$this->getPrinter()->error('Written File not found');
 			return false;
@@ -74,6 +81,7 @@ class DefaultController extends Controller {
 			return false;
 		}
 		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
+		$this->lastWrittenFile = $copier->lastCopyFile;
 		return true;
 	}
 
@@ -105,5 +113,26 @@ class DefaultController extends Controller {
 		$this->getPrinter()->success('Succeeded to write file: '. $writer->lastWrittenFile);
 		$this->lastWrittenFile = $writer->lastWrittenFile;
 		return true;
+	}
+
+	/**
+	 * Send Emails parsed from the JSON Report Request
+	 * @return void
+	 */
+	private function emailFromJson() {
+		$emails = $this->report->getJson()->getEmails();
+		
+		if ($emails->hasTo() === false) {
+			return true;
+		}
+		$this->getPrinter()->info('Sending Emails:');
+
+		$mailer = new Email\Mailer();
+		$mailer->addFile($this->lastWrittenFile);
+		$errors = $mailer->mail($emails);
+
+		foreach ($errors as $email => $msg) {
+			$this->getPrinter()->error("Error ($email): $msg");
+		}
 	}
 }
