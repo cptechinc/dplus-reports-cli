@@ -10,6 +10,9 @@ use Dplus\Reports\Json\Report\Emails;
 /**
  * Mailer
  * Emails Report Spreadsheet
+ * 
+ * @property array $errors Errors Keyd by Email Address
+ * @property array $files  Filepaths to add attachements
  */
 class Mailer {
 	public $errors = [];
@@ -50,7 +53,7 @@ class Mailer {
 				$mail->addAddress($email->getAddress());
 				$mail->addReplyTo($fromAddress);
 				$mail->Subject = $email->getSubject();
-				$mail->Body    = $email->getSubject();
+				$mail->Body    = "Your Report(s) are attached";
 				
 				foreach ($this->files as $file) {
 					$mail->addAttachment($file);

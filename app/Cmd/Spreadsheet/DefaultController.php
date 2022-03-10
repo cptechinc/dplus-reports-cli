@@ -48,13 +48,20 @@ class DefaultController extends Controller {
 			$this->copySpreadsheetFromCmd();
 		}
 
+		if ($this->report->getJson()->getSaveFile()->hasFilename()) {
+			$this->copySpreadsheetFromJson();
+		}
+
 		if ($this->report->getJson()->getEmails()->hasTo()) {
 			$this->emailFromJson();
 		}
-
 		return $saved;
 	}
 
+	/**
+	 * Parse Command to Copy Spreedsheet to Location
+	 * @return bool
+	 */
 	protected function copySpreadsheetFromCmd() {
 		if (empty($this->lastWrittenFile)) {
 			$this->getPrinter()->error('Written File not found');
@@ -116,8 +123,8 @@ class DefaultController extends Controller {
 	}
 
 	/**
-	 * Send Emails parsed from the JSON Report Request
-	 * @return void
+	 * Send Emails parsed from the JSON Request
+	 * @return bool
 	 */
 	private function emailFromJson() {
 		$emails = $this->report->getJson()->getEmails();
@@ -134,5 +141,36 @@ class DefaultController extends Controller {
 		foreach ($errors as $email => $msg) {
 			$this->getPrinter()->error("Error ($email): $msg");
 		}
+		return true;
+	}
+
+	/**
+	 * Copy Spreadsheet to location in JSON request
+	 * @return bool
+	 */
+	private function copySpreadsheetFromJson() {
+		if (empty($this->lastWrittenFile)) {
+			$this->getPrinter()->error('Written File not found');
+			return false;
+		}
+		if (file_exists($this->lastWrittenFile) === false) {
+			$this->getPrinter()->error("File '$this->lastWrittenFile' not found");
+			return false;
+		}
+
+		$newFile = $this->report->getJson()->getSaveFile();
+
+		$copier = new Files\Copier();
+		$copier->setOriginalFilepath($this->lastWrittenFile);
+		$copier->setDestinationDirectory($newFile->getDir());
+		$copier->setDestinationFilename($newFile->filename());
+
+		if ($copier->copy() === false) {
+			$this->getPrinter()->error($copier->error);
+			return false;
+		}
+		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
+		$this->lastWrittenFile = $copier->lastCopyFile;
+		return true;
 	}
 }
