@@ -51,8 +51,10 @@ abstract class ReportController extends Controller {
 		$class = $ns.ucfirst($name);
 		
 		if (class_exists($class) === false) {
-			$this->getPrinter()->error("Report '$name' not found");
-			return false;
+			$class = "Dplus\\Reports\\Json\\Report";
+			$report = new $class();
+			$report->setCode($name);
+			return $report;
 		}
 		$report = new $class();
 		return $report;
