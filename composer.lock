@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-json-reports.git",
-                "reference": "c24dd0f9697bb5fe8b5d5608838aec0584526438"
+                "reference": "7e0680522621db4fe0590a974ca6d1c9bfddc61c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-json-reports/zipball/c24dd0f9697bb5fe8b5d5608838aec0584526438",
-                "reference": "c24dd0f9697bb5fe8b5d5608838aec0584526438",
+                "url": "https://api.github.com/repos/cptechinc/dplus-json-reports/zipball/7e0680522621db4fe0590a974ca6d1c9bfddc61c",
+                "reference": "7e0680522621db4fe0590a974ca6d1c9bfddc61c",
                 "shasum": ""
             },
             "require-dev": {
@@ -35,7 +35,7 @@
                 "issues": "https://github.com/cptechinc/dplus-json-reports/issues",
                 "source": "https://github.com/cptechinc/dplus-json-reports/tree/main"
             },
-            "time": "2022-03-10T16:15:30+00:00"
+            "time": "2022-03-29T18:44:44+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
