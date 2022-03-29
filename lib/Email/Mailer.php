@@ -3,7 +3,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-
 // Dplus Json Emails;
 use Dplus\Reports\Json\Report\Emails;
 
@@ -44,10 +43,11 @@ class Mailer {
 	 */
 	public function mail(Emails $emails) {
 		$errors = [];
-		$mail = new PHPMailer(true);
 		$fromAddress = $emails->getFrom()->getAddress();
 
 		foreach ($emails->getTo() as $key => $email) {
+			$mail = new PHPMailer(true);
+
 			try {
 				$mail->setFrom($fromAddress);
 				$mail->addAddress($email->getAddress());
