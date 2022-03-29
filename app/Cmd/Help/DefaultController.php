@@ -1,6 +1,4 @@
 <?php namespace App\Cmd\Help;
-// Mincli Library
-use Minicli\App;
 // Command Library
 use Pauldro\Minicli\Cmd\Help\Controller;
 
