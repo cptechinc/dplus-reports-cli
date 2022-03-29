@@ -7,7 +7,6 @@ use Pauldro\Minicli\Cmd\Help\Controller;
 /**
  * Help\SpreadsheetController
  * Displays Help Screen for Spreadsheet
- * 
  */
 class SpreadsheetController extends Controller {
 	const COMMAND = 'spreadsheet';
@@ -22,7 +21,7 @@ class SpreadsheetController extends Controller {
 	];
 	const OPTIONS_DEFINITIONS = [
 		// 'flag'   => 'Flag to attach',
-		'report' => 'Report Code',
+		'report' => 'Report Code / COBOL Program ID',
 		'id'     => 'Report ID',
 	];
 	const SUBCOMMANDS = [];
