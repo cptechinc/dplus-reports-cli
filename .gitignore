@@ -8,3 +8,6 @@ vendor/
 
 # Config Files
 /.env
+
+# Log Files
+./rqstlog
