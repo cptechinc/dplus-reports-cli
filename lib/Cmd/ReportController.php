@@ -30,6 +30,7 @@ abstract class ReportController extends Controller {
 		if ($this->initConfig() === false) {
 			return false;
 		}
+
 		if ($this->initEnv() === false) {
 			return false;
 		}
@@ -119,11 +120,20 @@ abstract class ReportController extends Controller {
 	 * @return bool
 	 */
 	protected function initEnv() {
+		if ($this->hasParam('co') === false) {
+			$this->getPrinter()->error("Please provide company number (co=CO)");
+			return false;
+		}
+
 		if (array_key_exists('DIRECTORY_JSON', $_ENV) === false) {
 			$this->getPrinter()->error("'DIRECTORY_JSON' env value is not defined");
 			return false;
 		}
-		JsonFetcher::setDir($_ENV['DIRECTORY_JSON']);
+		
+		$companyNumber = $this->getParam('co');
+		$dir = $_ENV['DIRECTORY_JSON'] . "/json$companyNumber/";
+
+		JsonFetcher::setDir($dir);
 
 		if (array_key_exists('SPREADSHEET_WRITE_DIR', $_ENV) === false) {
 			$this->getPrinter()->error("'SPREADSHEET_WRITE_DIR' env value is not defined");
