@@ -9,7 +9,6 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Pauldro\Minicli\App\App;
 
-
 $app = new App([
 	'theme' => '\Unicorn',
 	'app_path' => __DIR__ . '/app/Cmd',
