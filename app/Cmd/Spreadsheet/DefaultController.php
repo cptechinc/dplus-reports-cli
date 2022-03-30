@@ -52,6 +52,10 @@ class DefaultController extends Controller {
 			$this->copySpreadsheetFromJson();
 		}
 
+		if ($this->hasFlag('--skip-email')) {
+			return $saved;
+		}
+
 		if ($this->report->getJson()->getEmails()->hasTo()) {
 			$this->emailFromJson();
 		}
@@ -113,6 +117,7 @@ class DefaultController extends Controller {
 		$writer->filename   = $this->report->getId();
 		$writer->fileprefix = $this->report->getCode();
 		$success = $writer->write($spreadsheet->getSpreadsheet());
+
 		if ($success === false) {
 			$this->getPrinter()->error('Failed to write file: '. $writer->lastWrittenFile);
 			return false;
