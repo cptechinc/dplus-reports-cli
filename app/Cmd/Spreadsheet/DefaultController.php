@@ -38,6 +38,8 @@ class DefaultController extends Controller {
 		if ($this->initEnv() === false) {
 			return false;
 		}
+		$this->logCommand();
+		
 		if ($this->initReport() === false) {
 			return false;
 		}

@@ -142,4 +142,21 @@ abstract class ReportController extends Controller {
 		Writer::setDir($_ENV['SPREADSHEET_WRITE_DIR']);
 		return true;
 	}
+
+	/**
+	 * Log Command sent to App
+	 * @return void
+	 */
+	protected function logCommand() {
+		$logCommands = boolval($_ENV['LOG_COMMANDS']);
+
+		if ($logCommands === false) {
+			return true;
+		}
+		$file = $this->app->config->env_dir . '/rqstlog';
+		$cmd = implode(' ', $this->input->getRawArgs());
+		$parts = [date('Ymd'), date('His'), $cmd];
+		$line = implode("\t", $parts) . PHP_EOL;
+		file_put_contents($file, $line);
+	}
 }
