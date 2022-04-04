@@ -10,4 +10,4 @@ vendor/
 /.env
 
 # Log Files
-./rqstlog
+./logs/
