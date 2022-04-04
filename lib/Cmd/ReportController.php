@@ -155,8 +155,9 @@ abstract class ReportController extends Controller {
 		}
 		$file = $this->app->config->env_dir . '/rqstlog';
 		$cmd = implode(' ', $this->input->getRawArgs());
-		$parts = [date('Ymd'), date('His'), $cmd];
-		$line = implode("\t", $parts) . PHP_EOL;
-		file_put_contents($file, $line);
+		$line = implode("\t", [date('Ymd'), date('His'), $cmd]) . PHP_EOL;
+		$current = file_get_contents($file);
+		
+		file_put_contents($file, $current . $line);
 	}
 }
