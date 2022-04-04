@@ -8,7 +8,8 @@ use Pauldro\Minicli\Cmd\Help\Controller;
  */
 class DefaultController extends Controller {
 	const COMMAND_DEFINITIONS = [
-		'spreadsheet'       => 'Convert JSON data into Spreadsheet',
+		'spreadsheet'  => 'Convert JSON data into Spreadsheet',
+		'log'          => 'View Log Data',
 	];
 
 	/**
