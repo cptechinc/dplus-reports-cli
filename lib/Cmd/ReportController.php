@@ -4,8 +4,6 @@ use Dotenv\Dotenv;
 use Dotenv\RuntimeException;
 // Mincli Library
 use Minicli\App;
-// Command Library
-use Pauldro\Minicli\Cmd\Controller;
 // Dplus Reports
 use Dplus\Reports\Json\Fetcher as JsonFetcher;
 use Dplus\Reports\Json\Report;
@@ -141,23 +139,5 @@ abstract class ReportController extends Controller {
 		}
 		Writer::setDir($_ENV['SPREADSHEET_WRITE_DIR']);
 		return true;
-	}
-
-	/**
-	 * Log Command sent to App
-	 * @return void
-	 */
-	protected function logCommand() {
-		$logCommands = boolval($_ENV['LOG_COMMANDS']);
-
-		if ($logCommands === false) {
-			return true;
-		}
-		$file = $this->app->config->env_dir . '/rqstlog';
-		$cmd  = implode(' ', $this->input->getRawArgs());
-		$line = implode("\t", [date('Ymd'), date('His'), $cmd]) . PHP_EOL;
-		$current = file_get_contents($file);
-		
-		file_put_contents($file, $current . $line);
 	}
 }
