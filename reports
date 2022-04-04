@@ -13,6 +13,7 @@ $app = new App([
 	'theme' => '\Unicorn',
 	'app_path' => __DIR__ . '/app/Cmd',
 	'env_dir'  => __DIR__,
+	'log_dir'  => __DIR__ . '/logs',
 ]);
-$app->setSignature("./script ");
+$app->setSignature("./reports ");
 $app->runCommand($argv);
