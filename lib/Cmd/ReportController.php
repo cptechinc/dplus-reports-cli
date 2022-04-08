@@ -138,6 +138,7 @@ abstract class ReportController extends Controller {
 			return false;
 		}
 		Writer::setDir($_ENV['SPREADSHEET_WRITE_DIR']);
+		date_default_timezone_set($_ENV['TIMEZONE']);
 		return true;
 	}
 }
