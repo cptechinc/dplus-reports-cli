@@ -70,16 +70,13 @@ class DefaultController extends Controller {
 	 */
 	protected function copySpreadsheetFromCmd() {
 		if (empty($this->lastWrittenFile)) {
-			$this->getPrinter()->error('Written File not found');
-			return false;
+			return $this->error('Written File not found');
 		}
 		if (file_exists($this->lastWrittenFile) === false) {
-			$this->getPrinter()->error("File '$this->lastWrittenFile' not found");
-			return false;
+			return $this->error("File '$this->lastWrittenFile' not found");
 		}
 		if ($this->hasParam('dir') === false || is_dir($this->getParam('dir')) === false) {
-			$this->getPrinter()->error("Invalid directory provided (dir=DIR)");
-			return false;
+			return $this->error("Invalid directory provided (dir=DIR)");
 		}
 		$copier = new Files\Copier();
 		$copier->setOriginalFilepath($this->lastWrittenFile);
@@ -90,8 +87,7 @@ class DefaultController extends Controller {
 		}
 
 		if ($copier->copy() === false) {
-			$this->getPrinter()->error($copier->error);
-			return false;
+			return $this->error($copier->error);
 		}
 		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
 		$this->lastWrittenFile = $copier->lastCopyFile;
@@ -121,8 +117,7 @@ class DefaultController extends Controller {
 		$success = $writer->write($spreadsheet->getSpreadsheet());
 
 		if ($success === false) {
-			$this->getPrinter()->error('Failed to write file: '. $writer->lastWrittenFile);
-			return false;
+			return $this->error('Failed to write file: '. $writer->lastWrittenFile);
 		}
 		$this->getPrinter()->success('Succeeded to write file: '. $writer->lastWrittenFile);
 		$this->lastWrittenFile = $writer->lastWrittenFile;
@@ -146,7 +141,7 @@ class DefaultController extends Controller {
 		$errors = $mailer->mail($emails);
 
 		foreach ($errors as $email => $msg) {
-			$this->getPrinter()->error("Error ($email): $msg");
+			$this->error("Error ($email): $msg");
 		}
 		return true;
 	}
@@ -157,12 +152,10 @@ class DefaultController extends Controller {
 	 */
 	private function copySpreadsheetFromJson() {
 		if (empty($this->lastWrittenFile)) {
-			$this->getPrinter()->error('Written File not found');
-			return false;
+			return $this->error('Written File not found');
 		}
 		if (file_exists($this->lastWrittenFile) === false) {
-			$this->getPrinter()->error("File '$this->lastWrittenFile' not found");
-			return false;
+			return $this->error("File '$this->lastWrittenFile' not found");
 		}
 
 		$newFile = $this->report->getJson()->getSaveFile();
@@ -173,8 +166,7 @@ class DefaultController extends Controller {
 		$copier->setDestinationFilename($newFile->filename());
 
 		if ($copier->copy() === false) {
-			$this->getPrinter()->error($copier->error);
-			return false;
+			return $this->error($copier->error);
 		}
 		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
 		$this->lastWrittenFile = $copier->lastCopyFile;

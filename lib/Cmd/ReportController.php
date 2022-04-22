@@ -65,8 +65,7 @@ abstract class ReportController extends Controller {
 	 */
 	protected function getReport() {
 		if ($this->hasParam('report') === false || $this->hasParam('id') === false) {
-			$this->getPrinter()->error("Please provide report code (report=REPORT) and id (id=ID)");
-			return false;
+			return $this->error('Please provide report code (report=REPORT) and id (id=ID)');
 		}
 		$report = $this->_getReportFromParam();
 		if (empty($report)) {
@@ -75,8 +74,7 @@ abstract class ReportController extends Controller {
 		$report->setId($this->getParam('id'));
 
 		if ($report->fetch() === false) {
-			$this->getPrinter()->error($report->errorMsg);
-			return false;
+			return $this->error($report->errorMsg);
 		}
 		return $report;
 	}
@@ -107,8 +105,7 @@ abstract class ReportController extends Controller {
 		try {
 			$dotenv->required(['DIRECTORY_JSON']);
 		} catch(\RuntimeException $e) {
-			$this->getPrinter()->error($e->getMessage);
-			return false;
+			return $this->error($e->getMessage);
 		}
 		return true;
 	}
@@ -119,13 +116,11 @@ abstract class ReportController extends Controller {
 	 */
 	protected function initEnv() {
 		if ($this->hasParam('co') === false) {
-			$this->getPrinter()->error("Please provide company number (co=CO)");
-			return false;
+			return $this->error("Please provide company number (co=CO)");
 		}
 
 		if (array_key_exists('DIRECTORY_JSON', $_ENV) === false) {
-			$this->getPrinter()->error("'DIRECTORY_JSON' env value is not defined");
-			return false;
+			return $this->error("'DIRECTORY_JSON' env value is not defined");
 		}
 		
 		$companyNumber = $this->getParam('co');
@@ -134,8 +129,7 @@ abstract class ReportController extends Controller {
 		JsonFetcher::setDir($dir);
 
 		if (array_key_exists('SPREADSHEET_WRITE_DIR', $_ENV) === false) {
-			$this->getPrinter()->error("'SPREADSHEET_WRITE_DIR' env value is not defined");
-			return false;
+			return $this->error("'SPREADSHEET_WRITE_DIR' env value is not defined");
 		}
 		Writer::setDir($_ENV['SPREADSHEET_WRITE_DIR']);
 		date_default_timezone_set($_ENV['TIMEZONE']);
