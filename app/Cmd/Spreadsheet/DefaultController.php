@@ -5,7 +5,7 @@ use Dotenv\RuntimeException;
 // Mincli Library
 use Minicli\App;
 // Command Library
-use Lib\Cmd\ReportController as Controller;
+use Lib\Cmd\Controller\ReportController as Controller;
 // Dplus Reports
 use Dplus\Reports\Json\Spreadsheets\Report as Spreadsheet;
 use Dplus\Reports\Json\Spreadsheets\Writer;
@@ -45,13 +45,12 @@ class DefaultController extends Controller {
 		}
 		$saved = $this->writeSpreadsheetToFile($this->createSpreadsheet());
 
-
 		if ($this->hasFlag('--copy')) {
 			$this->copySpreadsheetFromCmd();
 		}
 
 		if ($this->report->getJson()->getSaveFile()->hasFilename()) {
-			$this->copySpreadsheetFromJson();
+			$this->copyFileFromJson($this->report->getJson());
 		}
 
 		if ($this->hasFlag('--skip-email')) {
@@ -59,7 +58,7 @@ class DefaultController extends Controller {
 		}
 
 		if ($this->report->getJson()->getEmails()->hasTo()) {
-			$this->emailFromJson();
+			$this->emailFromJson($this->report->getJson());
 		}
 		return $saved;
 	}
@@ -121,55 +120,6 @@ class DefaultController extends Controller {
 		}
 		$this->getPrinter()->success('Succeeded to write file: '. $writer->lastWrittenFile);
 		$this->lastWrittenFile = $writer->lastWrittenFile;
-		return true;
-	}
-
-	/**
-	 * Send Emails parsed from the JSON Request
-	 * @return bool
-	 */
-	private function emailFromJson() {
-		$emails = $this->report->getJson()->getEmails();
-		
-		if ($emails->hasTo() === false) {
-			return true;
-		}
-		$this->getPrinter()->info('Sending Emails:');
-
-		$mailer = new Email\Mailer();
-		$mailer->addFile($this->lastWrittenFile);
-		$errors = $mailer->mail($emails);
-
-		foreach ($errors as $email => $msg) {
-			$this->error("Error ($email): $msg");
-		}
-		return true;
-	}
-
-	/**
-	 * Copy Spreadsheet to location in JSON request
-	 * @return bool
-	 */
-	private function copySpreadsheetFromJson() {
-		if (empty($this->lastWrittenFile)) {
-			return $this->error('Written File not found');
-		}
-		if (file_exists($this->lastWrittenFile) === false) {
-			return $this->error("File '$this->lastWrittenFile' not found");
-		}
-
-		$newFile = $this->report->getJson()->getSaveFile();
-
-		$copier = new Files\Copier();
-		$copier->setOriginalFilepath($this->lastWrittenFile);
-		$copier->setDestinationDirectory($newFile->getDir());
-		$copier->setDestinationFilename($newFile->filename());
-
-		if ($copier->copy() === false) {
-			return $this->error($copier->error);
-		}
-		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
-		$this->lastWrittenFile = $copier->lastCopyFile;
 		return true;
 	}
 }

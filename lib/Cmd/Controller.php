@@ -1,15 +1,6 @@
 <?php namespace Lib\Cmd;
-// Dotenv Env Library
-use Dotenv\Dotenv;
-use Dotenv\RuntimeException;
-// Mincli Library
-use Minicli\App;
 // Command Library
 use Pauldro\Minicli\Cmd\Controller as Base;
-// Dplus Reports
-use Dplus\Reports\Json\Fetcher as JsonFetcher;
-use Dplus\Reports\Json\Report;
-use Dplus\Reports\Json\Spreadsheets\Writer;
 
 
 /**
@@ -79,6 +70,11 @@ abstract class Controller extends Base {
 		file_put_contents($file, $fileContent . $line);
 	}
 
+	/**
+	 * Log Error Message
+	 * @param  string $msg
+	 * @return false
+	 */
 	protected function error($msg) {
 		$this->getPrinter()->error($msg);
 		$this->logError($msg);
