@@ -1,7 +1,9 @@
-# Atom files
+# Editor files
 .ftpconfig
 .ftpignore
 project.cson
+./vscode
+
 
 # Vendor
 vendor/
