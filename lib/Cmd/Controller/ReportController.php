@@ -1,6 +1,6 @@
 <?php namespace Lib\Cmd\Controller;
 // Dplus Reports
-use Dplus\Reports\Report;
+use Lib\Reports\Report;
 
 
 /**
@@ -39,7 +39,7 @@ abstract class ReportController extends JsonController {
 	protected function _getReportFromParam() {
 		/** @var string */
 		$name = $this->getParam('report');
-		$ns = "Lib\\Reports\\";
+		$ns = "Lib\\Reports\\Report\\";
 		$class = $ns.ucfirst($name);
 		
 		if (class_exists($class) === false) {

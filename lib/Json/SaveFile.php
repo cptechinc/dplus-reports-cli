@@ -1,4 +1,4 @@
-<?php namespace Dplus\Json;
+<?php namespace Lib\Json;
 
 /**
  * SaveFile

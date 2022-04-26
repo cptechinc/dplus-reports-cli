@@ -1,6 +1,6 @@
 <?php namespace Lib\Convert;
 // Dplus Reports
-use Dplus\Reports\Json\Report\Json as Base;
+use Lib\Reports\Json as Base;
 
 /**
  * Json

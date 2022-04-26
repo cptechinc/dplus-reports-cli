@@ -3,10 +3,12 @@
 use Dotenv\Dotenv;
 use Dotenv\RuntimeException;
 // Dplus Reports
-use Dplus\Reports\Json\Fetcher as JsonFetcher;
-use Dplus\Reports\Json\Spreadsheets\Writer;
-use Dplus\Reports\Json\Report\Json;
-use Dplus\Reports\Files;
+use Lib\PhpSpreadsheet\Writer;
+// Lib Json
+use Lib\Json\Fetcher as JsonFetcher;
+use Lib\Json\Json;
+// Files
+use Lib\Files;
 // Emails
 use Lib\Email;
 // Controllers
@@ -14,7 +16,6 @@ use Lib\Cmd\Controller;
 
 /**
  * Base Class for Handling Commands that use JSON files
- * 
  */
 abstract class JsonController extends Controller {
 	/**

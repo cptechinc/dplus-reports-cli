@@ -4,7 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 // Dplus Json Emails;
-use Dplus\Reports\Json\Report\Emails;
+use Lib\Json\Emails;
 
 /**
  * Mailer
@@ -15,7 +15,6 @@ use Dplus\Reports\Json\Report\Emails;
  */
 class Mailer {
 	public $errors = [];
-
 	protected $files = [];
 
 	/**

@@ -1,6 +1,6 @@
 <?php namespace Lib\Convert;
 // Dplus Reports
-use Dplus\Reports\Json\Fetcher;
+use Lib\Json\Fetcher;
 
 /**
  * Request

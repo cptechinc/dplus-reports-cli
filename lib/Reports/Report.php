@@ -94,7 +94,7 @@ class Report {
 			$this->errorMsg = 'Report ' . $this->generateCodeId() . ' not found';
 			return false;
 		}
-		$json = Fetcher::instance()->fetch(($this->generateCodeId()));
+		$json = Fetcher::instance()->fetch($this->generateCodeId());
 
 		if (empty($json)) {
 			$this->errorMsg = Fetcher::instance()->errorMsg;

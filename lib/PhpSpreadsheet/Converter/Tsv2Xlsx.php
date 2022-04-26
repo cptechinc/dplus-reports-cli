@@ -4,7 +4,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 // Dplus Reports
-use Dplus\Reports\Json\Spreadsheets\Report as ReportSpreadsheet;
+use Lib\Reports\Spreadsheet\Report as ReportSpreadsheet;
 
 /**
  * Converter\Tsv2Xlsx

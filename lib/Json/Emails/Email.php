@@ -1,4 +1,4 @@
-<?php namespace Dplus\Json\Emails;
+<?php namespace Lib\Json\Emails;
 
 /**
  * Email
