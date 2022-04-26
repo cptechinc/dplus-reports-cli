@@ -7,9 +7,19 @@ use Lib\Reports\Json as Base;
  * Container for the JSON Request
  * 
  * @property string   $srcFilepath    Filepath to Source File
+ * @property array	  $fields	 Column Data
  */
 class Json extends Base {
-	protected $srcFile     = '';
+	protected $srcFile = '';
+	protected $fields  = [];
+
+	/** @var array Justify codes for each fieldtype code */
+	const FIELDTYPE_JUSTIFY = [
+		'C' => 'left',
+		'D' => 'left',
+		'I' => 'right',
+		'N' => 'right'
+	];
 
 	/**
 	 * Return Src Filepath
@@ -20,11 +30,33 @@ class Json extends Base {
 	}
 
 	/**
+	 * Return Fields Data
+	 * @return array
+	 */
+	public function getFields() {
+		return $this->fields;
+	}
+
+	/**
+	 * Return Field Justify Code for field
+	 * @param  string $key Fieldname / Key
+	 * @return string
+	 */
+	public function getFieldJustify($key) {
+		$field = $this->fields[$key];
+		return self::FIELDTYPE_JUSTIFY[$field['type']];
+	}
+
+	/**
 	 * Parse JSON data into properties
 	 * @return void
 	 */
 	protected function parseJson() {
 		$this->id = $this->json['reportid'];
+		
+		if (array_key_exists('columnlabels', $this->json)) {
+			$this->fields = $this->json['columnlabels'];
+		}
 		$this->parseJsonEmails();
 		$this->parseJsonSaveFile();
 		$this->parseJsonForSrcfile();
