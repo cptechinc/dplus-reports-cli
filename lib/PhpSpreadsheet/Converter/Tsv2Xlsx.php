@@ -5,6 +5,8 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 // Dplus Reports
 use Lib\Reports\Spreadsheet\Report as ReportSpreadsheet;
+// Lib PhpSpreadsheet
+use Lib\PhpSpreadsheet\Writer;
 
 /**
  * Converter\Tsv2Xlsx
@@ -23,6 +25,7 @@ class Tsv2Xlsx {
 	public function convert() {
 		$sheet = $this->spreadsheet->getActiveSheet();
 		$highestColumnIndex = Coordinate::columnIndexFromString($sheet->getHighestColumn()); // e.g. 5
+		Writer::setColumnsAutowidth($sheet, $highestColumnIndex);
 
 		for ($row = 1; $row < $sheet->getHighestRow(); $row++) {
 			for ($col = 1; $col <= $highestColumnIndex; $col++) {
