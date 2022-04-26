@@ -1,14 +1,14 @@
 <?php namespace Lib\Reports\Spreadsheet;
 // PhpSpreadsheet Library
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Style as SpreadsheetStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 // Reports Library
 use Lib\Reports\Json;
 // Lib PhpSpreadsheets
 use Lib\PhpSpreadsheet\Writer;
+use Lib\PhpSpreadsheet\Styles;
 
 
 /**
@@ -28,41 +28,6 @@ class Report {
 		'D' => DataType::TYPE_STRING,
 		'I' => DataType::TYPE_NUMERIC,
 		'N' => DataType::TYPE_NUMERIC
-	];
-
-	/** @var array Column Heading Styles */
-	const STYLES_COLUMN_HEADER = [
-		'font' => [
-			'bold' => true,
-			'size' => 14
-		],
-		'borders' => [
-			'bottom' => [
-				'borderStyle' => SpreadsheetStyles\Border::BORDER_THICK,
-			],
-		],
-	];
-
-	/** @var array Record Heading Styles */
-	const STYLES_RECORD_HEADING = [
-		'font' => [
-			'bold' => true,
-			'size' => 12
-		],
-		'borders' => [
-			'top' => [
-				'borderStyle' => SpreadsheetStyles\Border::BORDER_THIN,
-			],
-		],
-		'fill' => [
-			'fillType' => SpreadsheetStyles\Fill::FILL_SOLID,
-			'startColor' => [
-				'rgb' => 'E6E6EA',
-			],
-			'endColor' => [
-				'rgb' => 'E6E6EA',
-			],
-		],
 	];
 
 	public function __construct() {
@@ -110,7 +75,7 @@ class Report {
 		
 		foreach ($this->json->getFields() as $key => $field) {
 			$cell = $sheet->getCellByColumnAndRow($i, $row);
-			$cell->getStyle()->applyFromArray(static::STYLES_COLUMN_HEADER);
+			$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
 			$cell->getStyle()->getAlignment()->setHorizontal(Writer::getAlignmentCode($this->json->getFieldJustify($key)));
 			$cell->setValue($field['label']);
 			$i++;
@@ -132,7 +97,7 @@ class Report {
 		foreach ($data as $record) {
 			if (array_key_exists('header', $record)) {
 				$cell = $sheet->getCellByColumnAndRow(1, $row);
-				$cell->getStyle()->applyFromArray(static::STYLES_RECORD_HEADING);
+				$cell->getStyle()->applyFromArray(Styles::STYLES_RECORD_HEADING);
 				$cell->setValue($record['header']);
 
 				$c1 = Coordinate::stringFromColumnIndex(1) . $row;

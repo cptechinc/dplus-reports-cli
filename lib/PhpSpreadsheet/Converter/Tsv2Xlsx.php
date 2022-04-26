@@ -3,10 +3,9 @@
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
-// Dplus Reports
-use Lib\Reports\Spreadsheet\Report as ReportSpreadsheet;
 // Lib PhpSpreadsheet
 use Lib\PhpSpreadsheet\Writer;
+use Lib\PhpSpreadsheet\Styles;
 
 /**
  * Converter\Tsv2Xlsx
@@ -33,7 +32,7 @@ class Tsv2Xlsx {
 				$value = $cell->getValue();
 
 				if ($row == 1) {
-					$cell->getStyle()->applyFromArray(ReportSpreadsheet::STYLES_COLUMN_HEADER);
+					$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
 				}
 				$cell->setValueExplicit($value, DataType::TYPE_STRING);
 			}
