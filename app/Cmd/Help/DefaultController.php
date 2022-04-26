@@ -10,6 +10,7 @@ class DefaultController extends Controller {
 	const COMMAND_DEFINITIONS = [
 		'spreadsheet'  => 'Convert JSON data into Spreadsheet',
 		'log'          => 'View Log Data',
+		'convert'      => 'Convert file into Spreadsheet',
 	];
 
 	/**
