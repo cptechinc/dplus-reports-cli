@@ -11,19 +11,18 @@ use Lib\PhpSpreadsheet\Converter;
 use Lib\Cmd\Controller\ReportController as Controller;
 
 /**
- * Spreadsheet
- * Writes Spreadsheet from JSON report
+ * Convert
+ * Converts TSV file into .xlsx spreadsheet
  * 
  * @property string $lastWrittenFile  Full Filepath of the last written file
  * 
  * Usage:
- *   [shell] spreadsheet [options]
+ *   [shell] convert[options]
  * Options:
  *   report   Report Code
  *   id       Report ID
  */
 class DefaultController extends Controller {
-	const SAVE_EXTENSION = 'xlsx';
 	protected $lastWrittenFile = '';
 
 	public function handle() {
@@ -41,6 +40,10 @@ class DefaultController extends Controller {
 
 		if ($this->convert() === false) {
 			return false;
+		}
+
+		if ($this->hasFlag('--copy')) {
+			$this->copySpreadsheetFromCmd();
 		}
 
 		if ($this->request->getJson()->getSaveFile()->hasFilename()) {
@@ -84,6 +87,10 @@ class DefaultController extends Controller {
 		return empty($this->request) === false;
 	}
 
+	/**
+	 * Run Spreadsheet through Converter
+	 * @return bool
+	 */
 	public function convert() {
 		if (file_exists($this->request->getJson()->getSrcFilepath()) === false) {
 			return $this->error('Failed to read file: '. $this->request->getJson()->getSrcFilepath());
@@ -93,6 +100,11 @@ class DefaultController extends Controller {
 		return $this->writeSpreadsheet($spreadsheet);
 	}
 
+	/**
+	 * Write Spreadsheet to file
+	 * @param PhpSpreadsheetSpreadsheet $spreadsheet
+	 * @return bool
+	 */
 	protected function writeSpreadsheet(PhpSpreadsheetSpreadsheet $spreadsheet) {
 		$converter = new Converter\Tsv2Xlsx($spreadsheet);
 		$converter->convert();
