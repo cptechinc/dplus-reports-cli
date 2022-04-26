@@ -63,36 +63,6 @@ class DefaultController extends Controller {
 	}
 
 	/**
-	 * Parse Command to Copy Spreedsheet to Location
-	 * @return bool
-	 */
-	protected function copySpreadsheetFromCmd() {
-		if (empty($this->lastWrittenFile)) {
-			return $this->error('Written File not found');
-		}
-		if (file_exists($this->lastWrittenFile) === false) {
-			return $this->error("File '$this->lastWrittenFile' not found");
-		}
-		if ($this->hasParam('dir') === false || is_dir($this->getParam('dir')) === false) {
-			return $this->error("Invalid directory provided (dir=DIR)");
-		}
-		$copier = new Files\Copier();
-		$copier->setOriginalFilepath($this->lastWrittenFile);
-		$copier->setDestinationDirectory($this->getParam('dir'));
-
-		if ($this->hasParam('filename')) {
-			$copier->setDestinationFilename($this->getParam('filename'));
-		}
-
-		if ($copier->copy() === false) {
-			return $this->error($copier->error);
-		}
-		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
-		$this->lastWrittenFile = $copier->lastCopyFile;
-		return true;
-	}
-
-	/**
 	 * Return Spreadsheet generated from Report
 	 * @return Spreadsheet
 	 */
