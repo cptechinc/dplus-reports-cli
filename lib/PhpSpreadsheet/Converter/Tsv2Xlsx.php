@@ -6,6 +6,10 @@ use PhpOffice\PhpSpreadsheet\Cell\DataType;
 // Lib PhpSpreadsheet
 use Lib\PhpSpreadsheet\Writer;
 use Lib\PhpSpreadsheet\Styles;
+use Lib\PhpSpreadsheet\DataTypes;
+
+use Lib\Convert\Request;
+use Lib\Convert\Json;
 
 /**
  * Converter\Tsv2Xlsx
@@ -13,7 +17,8 @@ use Lib\PhpSpreadsheet\Styles;
  * Handles Converting Cells for Xlsx from TSV
  */
 class Tsv2Xlsx {
-	public function __construct(Spreadsheet $spreadsheet) {
+	public function __construct(Request $request, Spreadsheet $spreadsheet) {
+		$this->request = $request;
 		$this->spreadsheet = $spreadsheet;
 	}
 
@@ -26,7 +31,13 @@ class Tsv2Xlsx {
 		$highestColumnIndex = Coordinate::columnIndexFromString($sheet->getHighestColumn()); // e.g. 5
 		Styles::setColumnsAutowidth($sheet, $highestColumnIndex);
 
-		for ($row = 1; $row < $sheet->getHighestRow(); $row++) {
+		$fieldData = $this->request->getJson()->getFields();
+		$colData = [];
+		foreach ($fieldData as $field) {
+			$colData[] = $field;
+		}
+
+		for ($row = 1; $row < $sheet->getHighestRow() + 1; $row++) {
 			for ($col = 1; $col <= $highestColumnIndex; $col++) {
 				$cell  = $sheet->getCellByColumnAndRow($col, $row);
 				$value = $cell->getValue();
@@ -34,7 +45,18 @@ class Tsv2Xlsx {
 				if ($row == 1) {
 					$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
 				}
-				$cell->setValueExplicit($value, DataType::TYPE_STRING);
+
+				$fieldType = $colData[$col - 1]['type'];
+				
+				
+				$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($fieldType)));
+				if ($row > 1) {
+					$cell->setValueExplicit($value, DataTypes::getDatatype($fieldType));
+					
+					if ($fieldType == 'N') {
+						$sheet->getStyle($cell->getCoordinate())->getNumberFormat()->setFormatCode('0.000');
+					}
+				}
 			}
 		}
 	}

@@ -3,12 +3,12 @@
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
 // Reports Library
 use Lib\Reports\Json;
-// Lib PhpSpreadsheets
+// Lib PhpSpreadsheet
 use Lib\PhpSpreadsheet\Writer;
 use Lib\PhpSpreadsheet\Styles;
+use Lib\PhpSpreadsheet\DataTypes;
 
 
 /**
@@ -21,14 +21,6 @@ use Lib\PhpSpreadsheet\Styles;
 class Report {
 	protected $spreadsheet;
 	protected $json;
-
-	/** @var array Mapping of Fieldtype codes to Datatype codes*/
-	const FIELDTYPE_DATATYPE = [
-		'C' => DataType::TYPE_STRING,
-		'D' => DataType::TYPE_STRING,
-		'I' => DataType::TYPE_NUMERIC,
-		'N' => DataType::TYPE_NUMERIC
-	];
 
 	public function __construct() {
 		$this->spreadsheet = new Spreadsheet();
@@ -113,8 +105,8 @@ class Report {
 	
 					foreach ($this->json->getFields() as $key => $field) {
 						$cell = $sheet->getCellByColumnAndRow($i, $row);
-						$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode($this->json->getFieldJustify($key)));
-						$cell->setValueExplicit(str_replace('\\', '', $detail[$key]), static::FIELDTYPE_DATATYPE[$field['type']]);
+						$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($field['type'])));
+						$cell->setValueExplicit(str_replace('\\', '', $detail[$key]), DataTypes::getDatatype($field['type']));
 						$i++;
 					}
 					$row++;
