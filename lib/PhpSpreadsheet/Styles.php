@@ -47,7 +47,6 @@ class Styles {
 		],
 	];
 
-
 	/**
 	 * Returns Spreadsheet Alignment Code
 	 * @param  string $justify  Code given e.g. r, right
