@@ -19,14 +19,6 @@ class Json extends BaseJson {
 	protected $data   = [];
 	protected $hasHeaders = false;
 
-	/** @var array Justify codes for each fieldtype code */
-	const FIELDTYPE_JUSTIFY = [
-		'C' => 'left',
-		'D' => 'left',
-		'I' => 'right',
-		'N' => 'right'
-	];
-
 	public function __construct($report, $id) {
 		parent::__construct();
 		$this->report = $report;
@@ -55,16 +47,6 @@ class Json extends BaseJson {
 	 */
 	public function hasHeaders() {
 		return $this->hasHeaders;
-	}
-
-	/**
-	 * Return Field Justify Code for field
-	 * @param  string $key Fieldname / Key
-	 * @return string
-	 */
-	public function getFieldJustify($key) {
-		$field = $this->fields[$key];
-		return self::FIELDTYPE_JUSTIFY[$field['type']];
 	}
 
 	/**
