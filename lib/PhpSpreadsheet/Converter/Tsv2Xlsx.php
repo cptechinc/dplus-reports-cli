@@ -24,7 +24,7 @@ class Tsv2Xlsx {
 	public function convert() {
 		$sheet = $this->spreadsheet->getActiveSheet();
 		$highestColumnIndex = Coordinate::columnIndexFromString($sheet->getHighestColumn()); // e.g. 5
-		Writer::setColumnsAutowidth($sheet, $highestColumnIndex);
+		Styles::setColumnsAutowidth($sheet, $highestColumnIndex);
 
 		for ($row = 1; $row < $sheet->getHighestRow(); $row++) {
 			for ($col = 1; $col <= $highestColumnIndex; $col++) {

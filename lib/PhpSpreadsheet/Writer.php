@@ -2,7 +2,6 @@
 // PhpSpreadsheet Library
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 /**
@@ -71,36 +70,5 @@ abstract class Writer {
 		}
 		$this->lastWrittenFile = $this->getFilepath();
 		return true;
-	}
-
-	/**
-	 * Returns Spreadsheet Alignment Code
-	 * @param  string $justify  Code given e.g. r, right
-	 * @return string
-	 */
-	public static function getAlignmentCode($justify) {
-		switch (substr($justify, 0, 1)) {
-			case 'r':
-				return Alignment::HORIZONTAL_RIGHT;
-				break;
-			case 'c':
-				return Alignment::HORIZONTAL_CENTER;
-				break;
-			default:
-				return Alignment::HORIZONTAL_LEFT;
-				break;
-		}
-	}
-
-	/**
-	 * Set Columns to be autowidth
-	 * @param Worksheet $sheet       Sheet
-	 * @param int       $columncount Number of Columns to iterate
-	 */
-	public static function setColumnsAutowidth(Worksheet $sheet, int $columncount) {
-		for ($i = 0; $i < ($columncount); $i++) {
-			$index = Coordinate::stringFromColumnIndex($i);
-			$sheet->getColumnDimension($index)->setAutoSize(true);
-		}
 	}
 }

@@ -67,7 +67,7 @@ class Report {
 	protected function generateHeader() {
 		$sheet = $this->spreadsheet->getActiveSheet();
 		$colCount = count($this->json->getFields());
-		Writer::setColumnsAutowidth($sheet, $colCount);
+		Styles::setColumnsAutowidth($sheet, $colCount);
 
 		$row = 1;
 		// If Report has headers, push columns to the right 
@@ -76,7 +76,7 @@ class Report {
 		foreach ($this->json->getFields() as $key => $field) {
 			$cell = $sheet->getCellByColumnAndRow($i, $row);
 			$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
-			$cell->getStyle()->getAlignment()->setHorizontal(Writer::getAlignmentCode($this->json->getFieldJustify($key)));
+			$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode($this->json->getFieldJustify($key)));
 			$cell->setValue($field['label']);
 			$i++;
 		}
@@ -113,7 +113,7 @@ class Report {
 	
 					foreach ($this->json->getFields() as $key => $field) {
 						$cell = $sheet->getCellByColumnAndRow($i, $row);
-						$cell->getStyle()->getAlignment()->setHorizontal(Writer::getAlignmentCode($this->json->getFieldJustify($key)));
+						$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode($this->json->getFieldJustify($key)));
 						$cell->setValueExplicit(str_replace('\\', '', $detail[$key]), static::FIELDTYPE_DATATYPE[$field['type']]);
 						$i++;
 					}
