@@ -1,6 +1,6 @@
 <?php namespace App\Cmd\Log;
 // Command Library
-use Lib\Cmd\ReportController as Controller;
+use Lib\Cmd\Controller\ReportController as Controller;
 
 /**
  * Log
