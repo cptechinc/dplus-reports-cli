@@ -31,7 +31,6 @@ class Tsv {
 
 	/**
 	 * Use Reader to return Spreadsheet
-	 *
 	 * @param  string $filepath  /path/to/file
 	 * @return Spreadsheet
 	 */
