@@ -68,7 +68,7 @@ class Report {
 		foreach ($this->json->getFields() as $key => $field) {
 			$cell = $sheet->getCellByColumnAndRow($i, $row);
 			$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
-			$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode($this->json->getFieldJustify($key)));
+			$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($field['type'])));
 			$cell->setValue($field['label']);
 			$i++;
 		}
