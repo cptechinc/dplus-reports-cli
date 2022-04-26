@@ -106,7 +106,7 @@ class DefaultController extends Controller {
 	 * @return bool
 	 */
 	protected function writeSpreadsheet(PhpSpreadsheetSpreadsheet $spreadsheet) {
-		$converter = new Converter\Tsv2Xlsx($spreadsheet);
+		$converter = new Converter\Tsv2Xlsx($this->request, $spreadsheet);
 		$converter->convert();
 
 		$writer = new Writer\Xlsx($spreadsheet);
