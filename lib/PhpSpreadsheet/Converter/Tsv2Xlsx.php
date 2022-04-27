@@ -53,13 +53,13 @@ class Tsv2Xlsx {
 
 				if ($row > 1) {
 					$dataType = DataTypes::getDatatype($fieldType);
-					
+
 					if ($dataType === DataTypes\Strings::TYPE) {
 						$value = DataTypes\Strings::clean($value);
 					}
 					$cell->setValueExplicit($value, $dataType);
 					
-					if ($fieldType == 'N') {
+					if ($dataType == DataTypes\Number::TYPE) {
 						$cellNumberFormat = $cell->getStyle()->getNumberFormat();
 						$cellNumberFormat->setFormatCode(DataTypes\Number::generateFormatCode($value));
 					}
