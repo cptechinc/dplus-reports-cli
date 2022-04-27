@@ -8,6 +8,7 @@ use Lib\Reports\Json;
 // Lib PhpSpreadsheet
 use Lib\PhpSpreadsheet\Styles;
 use Lib\PhpSpreadsheet\DataTypes;
+use Lib\PhpSpreadsheet\Cells\Cell;
 
 
 /**
@@ -104,25 +105,11 @@ class Report {
 	
 					foreach ($this->json->getFields() as $key => $field) {
 						$value =  $detail[$key];
-						/** @var $fieldType Dplus Data Type */
+						/** @var string $fieldType Dplus Data Type */
 						$fieldType = $field['type'];
-						/** @var $dataType PhpSpreadsheet Data Type */
-						$dataType  = DataTypes::getDatatype($fieldType);
-						
-						
-						if ($dataType === DataTypes\Strings::TYPE) {
-							$value = DataTypes\Strings::clean($value);
-						}
-
 						$cell = $sheet->getCellByColumnAndRow($i, $row);
-						$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($fieldType)));
-						$cell->setValueExplicit($value, $dataType);
-						
-						// Set Format Code for Numbers
-						if ($dataType == DataTypes\Number::TYPE) {
-							$cellNumberFormat = $cell->getStyle()->getNumberFormat();
-							$cellNumberFormat->setFormatCode(DataTypes\Number::generateFormatCode($value));
-						}
+						Cell::setAlignmentFromFieldtype($cell, $fieldType);
+						Cell::setValue($cell, $fieldType, $value);
 						$i++;
 					}
 					$row++;
