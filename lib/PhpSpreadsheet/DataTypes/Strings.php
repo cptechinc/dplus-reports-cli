@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Cell\DataType;
  */
 class Strings {
 	const TYPE = DataType::TYPE_STRING;
+	const TYPE_DPLUS = 'C';
 	
 	public static function clean($str) {
 		return stripslashes($str);
