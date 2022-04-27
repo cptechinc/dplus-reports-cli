@@ -104,9 +104,22 @@ class Report {
 					$i = $this->json->hasHeaders() ? 2 : 1;
 	
 					foreach ($this->json->getFields() as $key => $field) {
+						$value =  $detail[$key];
+						$fieldType = $field['type'];
+						$dataType  = DataTypes::getDatatype($fieldType);
+
+						if ($dataType === DataTypes\Strings::TYPE) {
+							$value = DataTypes\Strings::clean($value);
+						}
+
 						$cell = $sheet->getCellByColumnAndRow($i, $row);
-						$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($field['type'])));
-						$cell->setValueExplicit(str_replace('\\', '', $detail[$key]), DataTypes::getDatatype($field['type']));
+						$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($fieldType)));
+						$cell->setValueExplicit($value, $dataType);
+
+						if ($dataType == DataTypes\Number::TYPE) {
+							$cellNumberFormat = $cell->getStyle()->getNumberFormat();
+							$cellNumberFormat->setFormatCode(DataTypes\Number::generateFormatCode($value));
+						}
 						$i++;
 					}
 					$row++;
