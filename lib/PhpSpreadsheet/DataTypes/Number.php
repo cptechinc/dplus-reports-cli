@@ -1,4 +1,7 @@
 <?php namespace Lib\PhpSpreadsheet\DataTypes;
+// PhpSpreadsheet
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+
 
 /**
  * Number
@@ -6,6 +9,8 @@
  * Functions for Numbers
  */
 class Number {
+	const TYPE = DataType::TYPE_NUMERIC;
+	
 	/**
 	 * Return Format Code from number
 	 * @param  string|float $nbr
