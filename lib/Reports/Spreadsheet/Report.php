@@ -6,7 +6,6 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 // Reports Library
 use Lib\Reports\Json;
 // Lib PhpSpreadsheet
-use Lib\PhpSpreadsheet\Writer;
 use Lib\PhpSpreadsheet\Styles;
 use Lib\PhpSpreadsheet\DataTypes;
 
