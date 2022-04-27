@@ -48,16 +48,20 @@ class Tsv2Xlsx {
 				if ($row == 1) {
 					$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
 				}
-
 				$fieldType = $colData[$col - 1]['type'];
-				
-				
 				$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($fieldType)));
+
 				if ($row > 1) {
-					$cell->setValueExplicit($value, DataTypes::getDatatype($fieldType));
+					$dataType = DataTypes::getDatatype($fieldType);
+					
+					if ($dataType === DataTypes\Strings::TYPE) {
+						$value = DataTypes\Strings::clean($value);
+					}
+					$cell->setValueExplicit($value, $dataType);
 					
 					if ($fieldType == 'N') {
-						$sheet->getStyle($cell->getCoordinate())->getNumberFormat()->setFormatCode('0.000');
+						$cellNumberFormat = $cell->getStyle()->getNumberFormat();
+						$cellNumberFormat->setFormatCode(DataTypes\Number::generateFormatCode($value));
 					}
 				}
 			}
