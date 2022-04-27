@@ -10,6 +10,7 @@ use PhpOffice\PhpSpreadsheet\Cell\DataType;
  */
 class Number {
 	const TYPE = DataType::TYPE_NUMERIC;
+	const TYPE_DPLUS = 'N';
 	
 	/**
 	 * Return Format Code from number
@@ -24,7 +25,7 @@ class Number {
 			$parts = explode('.', $nbr);
 			$beforeDecimal = str_pad("", strlen($parts[0]), "0");
 			$afterDecimal = str_pad("", strlen($parts[1]), "0");
-			$formatCode = $beforeDecimal . "." . $afterDecimal;
+			$formatCode = "." . $afterDecimal;
 		}
 		return $formatCode;
 	}
