@@ -20,7 +20,7 @@ class DataTypes {
 	/** @var array Mapping of Fieldtype codes to Datatype codes*/
 	const FIELDTYPE_DATATYPE = [
 		'C' => DataType::TYPE_STRING,
-		'D' => DataType::TYPE_STRING,
+		'D' => DataType::TYPE_NUMERIC,
 		'I' => DataType::TYPE_NUMERIC,
 		'N' => DataType::TYPE_NUMERIC
 	];
