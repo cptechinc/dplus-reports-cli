@@ -48,17 +48,20 @@ class Tsv2Xlsx {
 				if ($row == 1) {
 					$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
 				}
+				/** @var $fieldType Dplus Data Type */
 				$fieldType = $colData[$col - 1]['type'];
 				$cell->getStyle()->getAlignment()->setHorizontal(Styles::getAlignmentCode(DataTypes::getFieldtypeJustify($fieldType)));
 
 				if ($row > 1) {
+					/** @var $dataType PhpSpreadsheet Data Type */
 					$dataType = DataTypes::getDatatype($fieldType);
-
+					// Cleanup string value
 					if ($dataType === DataTypes\Strings::TYPE) {
 						$value = DataTypes\Strings::clean($value);
 					}
 					$cell->setValueExplicit($value, $dataType);
 					
+					// Set Format Code for Numbers
 					if ($dataType == DataTypes\Number::TYPE) {
 						$cellNumberFormat = $cell->getStyle()->getNumberFormat();
 						$cellNumberFormat->setFormatCode(DataTypes\Number::generateFormatCode($value));
