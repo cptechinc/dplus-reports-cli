@@ -1,9 +1,7 @@
 <?php namespace Lib\PhpSpreadsheet\Cells;
 // PhpSpreadsheet
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SsCell;
 // Lib PhpSpreadsheet
-use Lib\PhpSpreadsheet\Writer;
 use Lib\PhpSpreadsheet\Styles;
 use Lib\PhpSpreadsheet\DataTypes;
 
@@ -28,12 +26,21 @@ class Cell {
 		if ($dataType === DataTypes\Strings::TYPE) {
 			$value = DataTypes\Strings::clean($value);
 		}
+
 		$cell->setValueExplicit($value, $dataType);
 		
 		// Set Format Code for Numbers
 		if ($dataType == DataTypes\Number::TYPE) {
+			$formatCode = DataTypes\Number::generateFormatCode($value);
+
+			if ($fieldType == DataTypes\Date::TYPE_DPLUS) {
+				if ($value) {
+					$formatCode = DataTypes\Date::getSsDateFormat($value);
+					$cell->setValue(DataTypes\Date::getDate($value));
+				}
+			}
 			$cellNumberFormat = $cell->getStyle()->getNumberFormat();
-			$cellNumberFormat->setFormatCode(DataTypes\Number::generateFormatCode($value));
+			$cellNumberFormat->setFormatCode($formatCode);
 		}
 	}
 
