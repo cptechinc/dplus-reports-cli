@@ -57,5 +57,7 @@ class Tsv2Xlsx {
 				}
 			}
 		}
+		// Freeze Column Heading Rows
+		$sheet->freezePane('A2'); 
 	}
 }
