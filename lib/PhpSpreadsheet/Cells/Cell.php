@@ -27,7 +27,9 @@ class Cell {
 			$value = DataTypes\Strings::clean($value);
 		}
 
-		$cell->setValueExplicit($value, $dataType);
+		if (strlen("$value")) {
+			$cell->setValueExplicit($value, $dataType);
+		}
 		
 		// Set Format Code for Numbers
 		if ($dataType == DataTypes\Number::TYPE) {
@@ -39,8 +41,11 @@ class Cell {
 					$cell->setValue(DataTypes\Date::getDate($value));
 				}
 			}
-			$cellNumberFormat = $cell->getStyle()->getNumberFormat();
-			$cellNumberFormat->setFormatCode($formatCode);
+
+			if ($value) {
+				$cellNumberFormat = $cell->getStyle()->getNumberFormat();
+				$cellNumberFormat->setFormatCode($formatCode);
+			}
 		}
 	}
 
