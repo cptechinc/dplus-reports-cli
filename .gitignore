@@ -2,7 +2,7 @@
 .ftpconfig
 .ftpignore
 project.cson
-./vscode
+./.vscode
 
 
 # Vendor
