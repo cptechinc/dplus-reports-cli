@@ -10,11 +10,7 @@ use Lib\Cmd\Controller\ReportController as Controller;
  * Usage:
  *   [shell] log [options]
  * Options:
- *   report   Report Code
- *   id       Report ID
- *  --copy    Make Copy
- *  filename  Copy Filename
- *  dir       Copy File Directory
+ * 
  */
 class DefaultController extends Controller {
 
