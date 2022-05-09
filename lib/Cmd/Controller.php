@@ -13,7 +13,7 @@ use Pauldro\Minicli\Cmd\Controller as Base;
  * Options:
  */
 abstract class Controller extends Base {
-	const LOG_CMD_NAME = 'commands.log';
+	const LOG_CMD_NAME   = 'commands.log';
 	const LOG_ERROR_NAME = 'error.log';
 
 	/**

@@ -16,5 +16,7 @@ class LogController extends Controller {
 	];
 	const OPTIONS = [];
 	const OPTIONS_DEFINITIONS = [];
-	const SUBCOMMANDS = [];
+	const SUBCOMMANDS = [
+		'clear'
+	];
 }
