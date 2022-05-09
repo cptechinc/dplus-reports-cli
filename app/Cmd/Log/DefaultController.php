@@ -73,7 +73,6 @@ class DefaultController extends Controller {
 
 			// Decrease our line counter
 			$lines -= substr_count($chunk, "\n");
-
 		}
 
 		// While we have too many lines
