@@ -13,7 +13,7 @@ class SaveFile {
 	protected $dir = '';
 	protected $filename = '';
 	protected $appendDatetime = false;
-	protected $datetimeFormat = 'Ymd';
+	protected $datetimeFormat = 'YmdHi';
 
 	/**
 	 * Return Directory
@@ -40,7 +40,7 @@ class SaveFile {
 		if ($this->appendDatetime === false) {
 			return $this->filename;
 		}
-		return $this->filename . "." . date($this->datetimeFormat);
+		return $this->filename . date($this->datetimeFormat);
 	}
 
 	/**
