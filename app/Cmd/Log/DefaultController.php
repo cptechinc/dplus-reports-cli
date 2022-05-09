@@ -27,12 +27,10 @@ class DefaultController extends Controller {
 		$this->getPrinter()->info('Last Command:');
 
 		$parts = explode("\t", $line);
-
 		$this->getPrinter()->out('  Date: ' . date('m/d/Y h:iA', strtotime($parts[0].$parts[1])));
 		$this->getPrinter()->newline();
 		$this->getPrinter()->out('  Command: ' . $parts[2]);
 		$this->getPrinter()->newline();
-
 	}
 
 	private function tailLog($filepath, $adaptive = true) {
@@ -81,17 +79,12 @@ class DefaultController extends Controller {
 		// While we have too many lines
 		// (Because of buffer size we might have read too many)
 		while ($lines++ < 0) {
-
 			// Find first newline and remove all text before that
 			$output = substr($output, strpos($output, "\n") + 1);
-
 		}
 
 		// Close file and return
 		fclose($f);
 		return trim($output);
 	}
-
-
-
 }
