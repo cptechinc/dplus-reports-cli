@@ -111,7 +111,16 @@ abstract class JsonController extends Controller {
 			return $this->error("'SPREADSHEET_WRITE_DIR' env value is not defined");
 		}
 		Writer::setDir($_ENV['SPREADSHEET_WRITE_DIR']);
-		date_default_timezone_set($_ENV['TIMEZONE']);
+		$this->initEnvTimeZone();
 		return true;
+	}
+
+	/**
+	 * Initialize the Local Time Zone
+	 * @return bool
+	 */
+	protected function initEnvTimeZone() {
+		$sysTZ = system('date +%Z');
+		return date_default_timezone_set(timezone_name_from_abbr($sysTZ));
 	}
 }
