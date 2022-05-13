@@ -4,11 +4,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 // Lib PhpSpreadsheet
 use Lib\PhpSpreadsheet\Styles;
-use Lib\PhpSpreadsheet\DataTypes;
 use Lib\PhpSpreadsheet\Cells\Cell;
 // Lib Convert
 use Lib\Convert\Request;
-use Lib\Convert\Json;
 
 /**
  * Converter\Tsv2Xlsx
@@ -43,7 +41,6 @@ class Tsv2Xlsx {
 		for ($row = 1; $row < $sheet->getHighestRow() + 1; $row++) {
 			for ($col = 1; $col <= $highestColumnIndex; $col++) {
 				$cell  = $sheet->getCellByColumnAndRow($col, $row);
-				$value = $cell->getValue();
 
 				if ($row == 1) {
 					$cell->getStyle()->applyFromArray(Styles::STYLES_COLUMN_HEADER);
@@ -53,7 +50,7 @@ class Tsv2Xlsx {
 				Cell::setAlignmentFromFieldtype($cell, $fieldType);
 				
 				if ($row > 1) {
-					Cell::setValue($cell, $fieldType, $value);
+					Cell::setValue($cell, $fieldType, $cell->getValue());
 				}
 			}
 		}

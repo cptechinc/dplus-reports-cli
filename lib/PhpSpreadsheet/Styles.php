@@ -71,12 +71,12 @@ class Styles {
 	 * @param Worksheet $sheet       Sheet
 	 * @param int       $columncount Number of Columns to iterate
 	 */
-	public static function setColumnsAutowidth(Worksheet $sheet, int $columncount) {
+	public static function setColumnsAutowidth(Worksheet $sheet, int $columncount = 0) {
 		if ($columncount === 0) {
 			$columncount = Coordinate::columnIndexFromString($sheet->getHighestColumn());
 		}
 
-		for ($i = 0; $i < ($columncount); $i++) {
+		for ($i = 0; $i <= ($columncount); $i++) {
 			$index = Coordinate::stringFromColumnIndex($i);
 			$sheet->getColumnDimension($index)->setAutoSize(true);
 		}
