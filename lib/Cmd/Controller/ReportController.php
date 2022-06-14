@@ -8,6 +8,7 @@ use Lib\Reports\Report;
  * Report Controller
  * 
  * Base Class for Reports Manipulation
+ * @property int    $startTime        Unix Timestamp of when Conversion started
  * 
  * Usage:
  *   [shell] [argument] [options]
@@ -17,6 +18,7 @@ use Lib\Reports\Report;
  */
 abstract class ReportController extends JsonController {
 	protected $report;
+	protected $startTime = 0;
 
 	public function handle() {
 		if ($this->initConfig() === false) {
@@ -79,6 +81,7 @@ abstract class ReportController extends JsonController {
 	 */
 	protected function initReport() {
 		$this->report = $this->getReport();
+		$this->startTime = time();
 		return empty($this->report) === false;
 	}
 
@@ -110,5 +113,20 @@ abstract class ReportController extends JsonController {
 		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
 		$this->lastWrittenFile = $copier->lastCopyFile;
 		return true;
+	}
+
+	/**
+	 * Display Elapsed Time
+	 *
+	 * @return void
+	 */
+	protected function displayElapsedTime() {
+		if (empty($this->startTime)) {
+			$this->getPrinter()->info('nope');
+			return false;
+		}
+		$endTime = time();
+		$elapsedTime = $endTime - $this->startTime;
+		$this->getPrinter()->info("Time Elapsed: " . $elapsedTime  . ' seconds');
 	}
 }

@@ -17,6 +17,7 @@ use Lib\Files;
  * Writes Spreadsheet from JSON report
  * 
  * @property string $lastWrittenFile  Full Filepath of the last written file
+ * @property int    $startTime        Unix Timestamp of when Conversion started
  * 
  * Usage:
  *   [shell] spreadsheet [options]
@@ -43,6 +44,12 @@ class DefaultController extends Controller {
 			return false;
 		}
 		$saved = $this->writeSpreadsheetToFile($this->createSpreadsheet());
+
+		if ($saved === false) {
+			return false;
+		}
+
+		$this->displayElapsedTime();
 
 		if ($this->hasFlag('--copy')) {
 			$this->copySpreadsheetFromCmd();

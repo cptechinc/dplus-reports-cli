@@ -15,6 +15,7 @@ use Lib\Cmd\Controller\ReportController as Controller;
  * Converts TSV file into .xlsx spreadsheet
  * 
  * @property string $lastWrittenFile  Full Filepath of the last written file
+ * @property int    $startTime        Unix Timestamp of when Conversion started
  * 
  * Usage:
  *   [shell] convert[options]
@@ -41,6 +42,8 @@ class DefaultController extends Controller {
 		if ($this->convert() === false) {
 			return false;
 		}
+
+		$this->displayElapsedTime();
 
 		if ($this->hasFlag('--copy')) {
 			$this->copySpreadsheetFromCmd();
