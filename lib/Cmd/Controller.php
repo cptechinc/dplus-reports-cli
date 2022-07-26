@@ -16,6 +16,20 @@ abstract class Controller extends Base {
 	const LOG_CMD_NAME   = 'commands.log';
 	const LOG_ERROR_NAME = 'error.log';
 
+/* =============================================================
+	Init Functions
+============================================================= */
+	/**
+	 * Initialize App
+	 * @return bool
+	 */
+	protected function init() {
+		return true;
+	}
+
+/* =============================================================
+	Logging Functions
+============================================================= */
 	/**
 	 * Return the Filepath to the command log
 	 * @return string

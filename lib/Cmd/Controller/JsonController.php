@@ -18,55 +18,10 @@ use Lib\Cmd\Controller;
  * Base Class for Handling Commands that use JSON files
  */
 abstract class JsonController extends Controller {
-	/**
-	 * Copy File to location in JSON request
-	 * @return bool
-	 */
-	protected function copyFileFromJson(Json $json) {
-		if (empty($this->lastWrittenFile)) {
-			return $this->error('Written File not found');
-		}
-		if (file_exists($this->lastWrittenFile) === false) {
-			return $this->error("File '$this->lastWrittenFile' not found");
-		}
 
-		$newFile = $json->getSaveFile();
-
-		$copier = new Files\Copier();
-		$copier->setOriginalFilepath($this->lastWrittenFile);
-		$copier->setDestinationDirectory($newFile->getDir());
-		$copier->setDestinationFilename($newFile->filename());
-
-		if ($copier->copy() === false) {
-			return $this->error($copier->error);
-		}
-		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
-		$this->lastWrittenFile = $copier->lastCopyFile;
-		return true;
-	}
-
-	/**
-	 * Send Emails parsed from the JSON Request
-	 * @return bool
-	 */
-	protected function emailFromJson(Json $json) {
-		$emails = $json->getEmails();
-		
-		if ($emails->hasTo() === false) {
-			return true;
-		}
-		$this->getPrinter()->info('Sending Emails:');
-
-		$mailer = new Email\Mailer();
-		$mailer->addFile($this->lastWrittenFile);
-		$errors = $mailer->mail($emails);
-
-		foreach ($errors as $email => $msg) {
-			$this->error("Error ($email): $msg");
-		}
-		return true;
-	}
-
+/* =============================================================
+	Init Functions
+============================================================= */
 	/**
 	 * Initialize / Load Config .env file
 	 * TODO: Add Required ENV values
@@ -122,5 +77,57 @@ abstract class JsonController extends Controller {
 	protected function initEnvTimeZone() {
 		$sysTZ = system('date +%Z');
 		return date_default_timezone_set(timezone_name_from_abbr($sysTZ));
+	}
+
+/* =============================================================
+	JSON Command Parsing
+============================================================= */
+	/**
+	 * Copy File to location in JSON request
+	 * @return bool
+	 */
+	protected function copyFileFromJson(Json $json) {
+		if (empty($this->lastWrittenFile)) {
+			return $this->error('Written File not found');
+		}
+		if (file_exists($this->lastWrittenFile) === false) {
+			return $this->error("File '$this->lastWrittenFile' not found");
+		}
+
+		$newFile = $json->getSaveFile();
+
+		$copier = new Files\Copier();
+		$copier->setOriginalFilepath($this->lastWrittenFile);
+		$copier->setDestinationDirectory($newFile->getDir());
+		$copier->setDestinationFilename($newFile->filename());
+
+		if ($copier->copy() === false) {
+			return $this->error($copier->error);
+		}
+		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
+		$this->lastWrittenFile = $copier->lastCopyFile;
+		return true;
+	}
+
+	/**
+	 * Send Emails parsed from the JSON Request
+	 * @return bool
+	 */
+	protected function emailFromJson(Json $json) {
+		$emails = $json->getEmails();
+		
+		if ($emails->hasTo() === false) {
+			return true;
+		}
+		$this->getPrinter()->info('Sending Emails:');
+
+		$mailer = new Email\Mailer();
+		$mailer->addFile($this->lastWrittenFile);
+		$errors = $mailer->mail($emails);
+
+		foreach ($errors as $email => $msg) {
+			$this->error("Error ($email): $msg");
+		}
+		return true;
 	}
 }

@@ -1,4 +1,9 @@
 <?php namespace Lib\Cmd\Controller;
+// Cache
+use Cache\Adapter\Apcu\ApcuCachePool;
+use Cache\Bridge\SimpleCache\SimpleCacheBridge;
+// PhpSpreadsheet
+use PhpOffice\PhpSpreadsheet\Settings as PhpSpreadsheetSettings;
 use Lib\Files;
 // Dplus Reports
 use Lib\Reports\Report;
@@ -21,20 +26,62 @@ abstract class ReportController extends JsonController {
 	protected $startTime = 0;
 
 	public function handle() {
+		return $this->init();
+	}
+
+/* =============================================================
+	Init Functions
+============================================================= */
+	protected function init() {
+		$this->startTime = time();
+		$this->logCommand();
+
 		if ($this->initConfig() === false) {
 			return false;
 		}
-
 		if ($this->initEnv() === false) {
 			return false;
 		}
-
-		if ($this->initReport() === false) {
-			return false;
-		}
+		$this->initIni(); 
+		$this->initSpreadsheetCache();
 		return true;
 	}
 
+	/**
+	 * Set php.ini settings
+	 * @return void
+	 */
+	protected function initIni() {
+		$settings = parse_ini_file($this->app->config->env_dir.'/php.ini');
+
+		foreach ($settings as $option => $value) {
+			ini_set($option, $value);
+		}
+	}
+
+	/**
+	 * Initialize Report
+	 * @return bool
+	 */
+	protected function initReport() {
+		$this->report = $this->getReport();
+		return empty($this->report) === false;
+	}
+
+	/**
+	 * Initialize Cache for Spreadsheet
+	 * @return bool
+	 */
+	protected function initSpreadsheetCache() {
+		$pool = new ApcuCachePool();
+		$simpleCache = new SimpleCacheBridge($pool);
+		PhpSpreadsheetSettings::setCache($simpleCache);
+		return true;
+	}
+
+/* =============================================================
+	Init Report Functions
+============================================================= */
 	/**
 	 * Return Report
 	 * @return Report
@@ -76,16 +123,6 @@ abstract class ReportController extends JsonController {
 	}
 
 	/**
-	 * Initialize Report
-	 * @return bool
-	 */
-	protected function initReport() {
-		$this->report = $this->getReport();
-		$this->startTime = time();
-		return empty($this->report) === false;
-	}
-
-	/**
 	 * Parse Command to Copy Spreedsheet to Location
 	 * @return bool
 	 */
@@ -117,7 +154,6 @@ abstract class ReportController extends JsonController {
 
 	/**
 	 * Display Elapsed Time
-	 *
 	 * @return void
 	 */
 	protected function displayElapsedTime() {
