@@ -10,3 +10,6 @@ like your base command to be called, make file executable
 
 ## .env Environment Variables
 Set up your Environment by setting Variables in the .env file
+
+## install.sh
+Set up server environment by running this shell script as root
