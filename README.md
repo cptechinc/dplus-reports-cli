@@ -11,5 +11,11 @@ like your base command to be called, make file executable
 ## .env Environment Variables
 Set up your Environment by setting Variables in the .env file
 
+## php.ini
+Used to load .ini settings needed for this app
+
+## apcu.ini
+File or values need to be copied to be loaded (can be done by using the install.sh)
+
 ## install.sh
 Set up server environment by running this shell script as root
