@@ -32,13 +32,9 @@ class DefaultController extends Controller {
 	protected $lastWrittenFile = '';
 
 	public function handle() {
-		if ($this->initConfig() === false) {
+		if ($this->init() === false) {
 			return false;
 		}
-		if ($this->initEnv() === false) {
-			return false;
-		}
-		$this->logCommand();
 		
 		if ($this->initReport() === false) {
 			return false;
@@ -74,6 +70,7 @@ class DefaultController extends Controller {
 	 * @return Spreadsheet
 	 */
 	protected function createSpreadsheet() {
+		
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->setJson($this->report->getJson());
 		$spreadsheet->generate();
