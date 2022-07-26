@@ -12,3 +12,7 @@ vendor/
 
 # Log Files
 /logs/
+
+
+# Test files
+app/Cmd/Test
