@@ -27,13 +27,9 @@ class DefaultController extends Controller {
 	protected $lastWrittenFile = '';
 
 	public function handle() {
-		if ($this->initConfig() === false) {
+		if ($this->init() === false) {
 			return false;
 		}
-		if ($this->initEnv() === false) {
-			return false;
-		}
-		$this->logCommand();
 		
 		if ($this->initRequest() === false) {
 			return false;
