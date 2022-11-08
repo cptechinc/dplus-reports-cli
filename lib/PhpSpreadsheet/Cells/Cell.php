@@ -34,6 +34,11 @@ class Cell {
 		// Set Format Code for Numbers
 		if ($dataType == DataTypes\Number::TYPE) {
 			$formatCode = DataTypes\Number::generateFormatCode($value);
+			
+			// Remove Thousands comma, the formatter will add it back
+			if (strpos($value, ',') !== false) { 
+				$cell->setValueExplicit(str_replace(',', '', $value), $dataType);
+			}
 
 			if ($fieldType == DataTypes\Date::TYPE_DPLUS) {
 				if ($value) {
