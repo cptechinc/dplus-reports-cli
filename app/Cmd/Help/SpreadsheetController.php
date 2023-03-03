@@ -19,12 +19,14 @@ class SpreadsheetController extends Controller {
 		'report' => 'report=REPORT',
 		'id'     => 'id=ID',
 		'co'     => 'co=CO',
+		'debug'  => '--debug'
 	];
 	const OPTIONS_DEFINITIONS = [
 		// 'flag'   => 'Flag to attach',
 		'report' => 'Report Code / COBOL Program ID',
 		'id'     => 'Report ID',
 		'co'     => 'Company Number',
+		'debug'  => 'Run in debug? (displays debug info, file(s) location(s), execution duration)'
 	];
 	const SUBCOMMANDS = [];
 
