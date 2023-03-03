@@ -24,6 +24,7 @@ use Lib\Reports\Report;
 abstract class ReportController extends JsonController {
 	protected $report;
 	protected $startTime = 0;
+	protected $lastWrittenFile = '';
 
 	public function handle() {
 		return $this->init();
@@ -163,6 +164,9 @@ abstract class ReportController extends JsonController {
 		}
 		$endTime = time();
 		$elapsedTime = $endTime - $this->startTime;
-		$this->getPrinter()->info("Time Elapsed: " . $elapsedTime  . ' seconds');
+
+		if ($this->hasFlag('--debug')) {
+			$this->getPrinter()->info("Time Elapsed: " . $elapsedTime  . ' seconds');
+		}
 	}
 }

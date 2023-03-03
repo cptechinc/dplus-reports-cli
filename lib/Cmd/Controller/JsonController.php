@@ -18,6 +18,7 @@ use Lib\Cmd\Controller;
  * Base Class for Handling Commands that use JSON files
  */
 abstract class JsonController extends Controller {
+	protected $lastWrittenFile = '';
 
 /* =============================================================
 	Init Functions
@@ -39,7 +40,7 @@ abstract class JsonController extends Controller {
 		try {
 			$dotenv->required(['DIRECTORY_JSON']);
 		} catch(\RuntimeException $e) {
-			return $this->error($e->getMessage);
+			return $this->error($e->getMessage());
 		}
 		return true;
 	}
@@ -75,7 +76,7 @@ abstract class JsonController extends Controller {
 	 * @return bool
 	 */
 	protected function initEnvTimeZone() {
-		$sysTZ = system('date +%Z');
+		$sysTZ = exec('date +%Z');
 		return date_default_timezone_set(timezone_name_from_abbr($sysTZ));
 	}
 
@@ -104,7 +105,9 @@ abstract class JsonController extends Controller {
 		if ($copier->copy() === false) {
 			return $this->error($copier->error);
 		}
-		$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
+		if ($this->hasFlag('--debug')) {
+			$this->getPrinter()->success("Copied File: $copier->lastCopyFile");
+		}
 		$this->lastWrittenFile = $copier->lastCopyFile;
 		return true;
 	}
@@ -119,7 +122,10 @@ abstract class JsonController extends Controller {
 		if ($emails->hasTo() === false) {
 			return true;
 		}
-		$this->getPrinter()->info('Sending Emails:');
+
+		if ($this->hasFlag('--debug')) {
+			$this->getPrinter()->info('Sending Emails:');
+		}
 
 		$mailer = new Email\Mailer();
 		$mailer->addFile($this->lastWrittenFile);

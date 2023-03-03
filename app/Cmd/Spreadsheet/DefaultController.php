@@ -27,6 +27,7 @@ use Lib\Files;
  *  --copy    Make Copy
  *  filename  Copy Filename
  *  dir       Copy File Directory
+ * --debug    Run and display debug
  */
 class DefaultController extends Controller {
 	protected $lastWrittenFile = '';
@@ -70,7 +71,6 @@ class DefaultController extends Controller {
 	 * @return Spreadsheet
 	 */
 	protected function createSpreadsheet() {
-		
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->setJson($this->report->getJson());
 		$spreadsheet->generate();
@@ -91,7 +91,9 @@ class DefaultController extends Controller {
 		if ($success === false) {
 			return $this->error('Failed to write file: '. $writer->lastWrittenFile);
 		}
-		$this->getPrinter()->success('Succeeded to write file: '. $writer->lastWrittenFile);
+		if ($this->hasFlag('--debug')) {
+			$this->getPrinter()->success('Succeeded to write file: '. $writer->lastWrittenFile);
+		}
 		$this->lastWrittenFile = $writer->lastWrittenFile;
 		return true;
 	}
