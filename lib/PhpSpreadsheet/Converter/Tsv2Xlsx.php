@@ -32,6 +32,7 @@ class Tsv2Xlsx {
 		Styles::setColumnsAutowidth($sheet, $highestColumnIndex);
 
 		$fieldData = $this->request->getJson()->getFields();
+
 		$colData = [];
 
 		foreach ($fieldData as $field) {
@@ -50,6 +51,10 @@ class Tsv2Xlsx {
 				Cell::setAlignmentFromFieldtype($cell, $fieldType);
 				
 				if ($row > 1) {
+					if ($fieldType == 'D' and $cell->getValue() == '00/00/00') {
+						Cell::setValue($cell, 'C', '00/00/0000');
+						continue;
+					}
 					Cell::setValue($cell, $fieldType, $cell->getValue());
 				}
 			}
