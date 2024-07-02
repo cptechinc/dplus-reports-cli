@@ -92,6 +92,6 @@ class Copier {
 	 * @return void
 	 */
 	public function setDestinationFilename($name) {
-		$this->destinationFilename= $name;
+		$this->destinationFilename = $name;
 	}
 }
