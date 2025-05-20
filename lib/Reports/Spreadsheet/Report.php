@@ -59,7 +59,7 @@ class Report {
 	protected function generateHeader() {
 		$sheet = $this->spreadsheet->getActiveSheet();
 		$colCount = count($this->json->getFields());
-		Styles::setColumnsAutowidth($sheet, $colCount);
+		Styles::setColumnsAutowidth($sheet, $colCount + 1);
 
 		$row = 1;
 		// If Report has headers, push columns to the right 
